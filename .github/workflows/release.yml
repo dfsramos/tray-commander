@@ -34,6 +34,10 @@ jobs:
       - name: Copy landing page
         run: Copy-Item web\index.html bin\Release\net10.0-windows\publish\index.html
 
+      - name: Prevent manifest line-ending corruption
+        run: |
+          "*.manifest binary`n*.application binary`n" | Set-Content -Path bin\Release\net10.0-windows\publish\.gitattributes -Encoding ascii -NoNewline
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
