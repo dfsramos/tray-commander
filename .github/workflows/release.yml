@@ -27,7 +27,7 @@ jobs:
 
       - name: Publish ClickOnce
         run: |
-          dotnet publish TrayCommander.csproj -p:PublishProfile=ClickOnce -p:ApplicationVersion=${{ steps.version.outputs.version }} -v:diag 2>&1 | Out-File build-diag.log -Encoding utf8
+          dotnet publish TrayCommander.csproj -p:PublishProfile=ClickOnce -p:ApplicationVersion=${{ steps.version.outputs.version }} -p:GenerateClickOnceManifests=true -v:diag 2>&1 | Out-File build-diag.log -Encoding utf8
           if ($LASTEXITCODE -ne 0) {
             Get-Content build-diag.log | Select-String -Pattern 'MSB3094|_Deployment|GenerateClickOnce|SourceFile|DestinationFile|error MSB' | Select-Object -First 80
             exit 1
