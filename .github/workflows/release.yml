@@ -18,7 +18,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Extract version from tag
         id: version
@@ -26,7 +26,7 @@ jobs:
         run: echo "version=${GITHUB_REF_NAME#v}.0" >> $GITHUB_OUTPUT
 
       - name: Publish ClickOnce
-        run: dotnet publish TrayCommander.csproj -p:PublishProfile=ClickOnce -p:ApplicationVersion=${{ steps.version.outputs.version }} -v:detailed 2>&1 | Select-String -Pattern 'MSB3094|SourceFiles|DestinationFiles|error|Error' | Select-Object -First 40
+        run: dotnet publish TrayCommander.csproj -p:PublishProfile=ClickOnce -p:ApplicationVersion=${{ steps.version.outputs.version }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
