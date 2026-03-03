@@ -10,8 +10,6 @@
     <FileVersion>1.0.0.0</FileVersion>
     <RootNamespace>TrayCommander</RootNamespace>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
-    <PublishSingleFile>true</PublishSingleFile>
-    <SelfContained>false</SelfContained>
   </PropertyGroup>
 
 </Project>
