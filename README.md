@@ -43,39 +43,6 @@ If both **Command** and **Script Path** are set, the script file takes precedenc
 
 Right-click → **Options** to toggle **Always run as administrator**. When enabled, the app re-launches itself elevated and all commands run in that elevated context without individual UAC prompts.
 
-## Configuration files
-
-Both files are stored alongside the executable and are created automatically on first run.
-
-### `commands.json`
-
-```json
-[
-  {
-    "name": "Reset IIS",
-    "command": "iisreset",
-    "scriptPath": "",
-    "runner": "cmd",
-    "requiresAdmin": true
-  },
-  {
-    "name": "Restart nginx",
-    "command": "sudo systemctl restart nginx",
-    "scriptPath": "",
-    "runner": "wsl",
-    "requiresAdmin": false
-  }
-]
-```
-
-### `options.json`
-
-```json
-{
-  "alwaysRunAsAdmin": false
-}
-```
-
 ## Building
 
 Requires [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) and Windows (or WSL with Windows targeting enabled).
@@ -92,18 +59,3 @@ msbuild TrayCommander.csproj /restore /t:Publish /p:PublishProfile=ClickOnce /p:
 ```
 
 Output lands in `bin/Release/net10.0-windows/publish/`.
-
-## Releases
-
-Releases are automated via GitHub Actions. Push a tag in `v*` format to trigger a build and deploy:
-
-```bash
-git tag v1.2.3
-git push origin v1.2.3
-```
-
-The workflow builds the ClickOnce package, injects the version from the tag, and deploys to GitHub Pages.
-
-## License
-
-MIT
