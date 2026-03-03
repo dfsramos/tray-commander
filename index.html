@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrayCommander</title>
+  <meta name="description" content="Run cmd, PowerShell, and WSL scripts from your system tray. One right-click away.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Space Grotesk', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'DM Sans', sans-serif; }
+    h1, h2, h3, nav { font-family: 'Space Grotesk', sans-serif; }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+  </style>
+</head>
+<body class="bg-[#09090b] text-zinc-100 antialiased">
+
+  <!-- Navbar -->
+  <nav class="fixed top-4 left-4 right-4 z-50 flex items-center justify-between px-5 py-3 bg-zinc-900/80 backdrop-blur-md border border-zinc-800/60 rounded-2xl">
+    <span class="font-semibold text-white tracking-tight">TrayCommander</span>
+    <a href="TrayCommander.application"
+       class="cursor-pointer px-4 py-1.5 text-sm font-medium bg-indigo-500 hover:bg-indigo-400 text-white rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-zinc-900">
+      Install
+    </a>
+  </nav>
+
+  <!-- Hero -->
+  <section class="min-h-screen flex flex-col items-center justify-center px-6 text-center pt-28 pb-16">
+    <div class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-indigo-400 text-xs font-medium mb-8">
+      <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+      Windows system tray utility
+    </div>
+
+    <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-6 max-w-3xl leading-[1.08]">
+      Your commands,<br>
+      <span class="text-indigo-400">one click away</span>
+    </h1>
+
+    <p class="text-zinc-400 text-lg md:text-xl max-w-xl mb-10 leading-relaxed">
+      TrayCommander puts cmd, PowerShell, and WSL scripts in your system tray.
+      Launch anything instantly — inline or from a script file.
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center gap-3">
+      <a href="TrayCommander.application"
+         class="cursor-pointer inline-flex items-center gap-2 px-6 py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-medium rounded-xl transition-colors duration-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-[#09090b]">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4" aria-hidden="true">
+          <path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z"/>
+          <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z"/>
+        </svg>
+        Install via ClickOnce
+      </a>
+      <a href="https://github.com/dfsramos/tray-commander"
+         class="cursor-pointer inline-flex items-center gap-2 px-6 py-3 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white font-medium rounded-xl transition-colors duration-200 text-sm border border-zinc-700/60 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 focus:ring-offset-[#09090b]">
+        <svg viewBox="0 0 24 24" class="w-4 h-4 fill-current" aria-hidden="true">
+          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+        </svg>
+        View on GitHub
+      </a>
+    </div>
+
+    <p class="mt-6 text-zinc-600 text-xs">
+      Requires .NET 10 Desktop Runtime · Windows only
+    </p>
+  </section>
+
+  <!-- Terminal preview strip -->
+  <div class="max-w-2xl mx-auto px-6 mb-24">
+    <div class="bg-zinc-900 border border-zinc-800/60 rounded-2xl overflow-hidden">
+      <div class="flex items-center gap-1.5 px-4 py-3 border-b border-zinc-800/60">
+        <span class="w-3 h-3 rounded-full bg-zinc-700"></span>
+        <span class="w-3 h-3 rounded-full bg-zinc-700"></span>
+        <span class="w-3 h-3 rounded-full bg-zinc-700"></span>
+        <span class="ml-2 text-xs text-zinc-600 font-mono">TrayCommander</span>
+      </div>
+      <div class="p-5 font-mono text-sm space-y-2 text-zinc-400">
+        <div><span class="text-zinc-600">$</span> <span class="text-indigo-400">Deploy-Prod</span> <span class="text-zinc-500">[PowerShell · scripts/deploy.ps1]</span></div>
+        <div><span class="text-zinc-600">$</span> <span class="text-emerald-400">Start Dev Server</span> <span class="text-zinc-500">[cmd · npm run dev]</span></div>
+        <div><span class="text-zinc-600">$</span> <span class="text-amber-400">Flush DNS</span> <span class="text-zinc-500">[cmd · admin · ipconfig /flushdns]</span></div>
+        <div><span class="text-zinc-600">$</span> <span class="text-sky-400">WSL Backup</span> <span class="text-zinc-500">[wsl · scripts/backup.sh]</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section class="py-4 pb-24 px-6 max-w-5xl mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-3 text-white tracking-tight">Built for speed</h2>
+    <p class="text-zinc-500 text-center text-sm mb-14 max-w-md mx-auto">Everything you need to run your scripts fast, without leaving your workflow.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+      <div class="p-6 bg-zinc-900 border border-zinc-800/60 rounded-2xl hover:border-zinc-700 transition-colors duration-200">
+        <div class="w-9 h-9 flex items-center justify-center bg-indigo-500/10 rounded-xl mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4.5 h-4.5 text-indigo-400" aria-hidden="true">
+            <path fill-rule="evenodd" d="M3.25 3A2.25 2.25 0 0 0 1 5.25v9.5A2.25 2.25 0 0 0 3.25 17h13.5A2.25 2.25 0 0 0 19 14.75v-9.5A2.25 2.25 0 0 0 16.75 3H3.25Zm.943 8.752a.75.75 0 0 1 .055-1.06L6.128 9l-1.88-1.693a.75.75 0 1 1 1.004-1.114l2.5 2.25a.75.75 0 0 1 0 1.114l-2.5 2.25a.75.75 0 0 1-1.06-.055ZM9.75 10.25a.75.75 0 0 0 0 1.5h2.5a.75.75 0 0 0 0-1.5h-2.5Z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <h3 class="font-semibold text-white mb-2 tracking-tight">Multi-runner</h3>
+        <p class="text-zinc-400 text-sm leading-relaxed">Run commands via cmd, PowerShell, or WSL. Type inline or point to a script file on disk.</p>
+      </div>
+
+      <div class="p-6 bg-zinc-900 border border-zinc-800/60 rounded-2xl hover:border-zinc-700 transition-colors duration-200">
+        <div class="w-9 h-9 flex items-center justify-center bg-indigo-500/10 rounded-xl mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4.5 h-4.5 text-indigo-400" aria-hidden="true">
+            <path fill-rule="evenodd" d="M14.5 10a4.5 4.5 0 0 0 4.284-5.882c-.105-.324-.51-.391-.752-.15L15.34 6.66a.454.454 0 0 1-.493.11 3.01 3.01 0 0 1-1.618-1.616.455.455 0 0 1 .11-.494l2.694-2.692c.24-.241.174-.647-.15-.752a4.5 4.5 0 0 0-5.873 4.575c.055.873-.128 1.808-.8 2.368l-7.23 6.024a2.724 2.724 0 1 0 3.837 3.837l6.024-7.23c.56-.672 1.495-.855 2.368-.8.096.007.193.01.291.01ZM5 16a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <h3 class="font-semibold text-white mb-2 tracking-tight">Admin-aware</h3>
+        <p class="text-zinc-400 text-sm leading-relaxed">Flag commands that need elevation. TrayCommander handles the UAC prompt automatically.</p>
+      </div>
+
+      <div class="p-6 bg-zinc-900 border border-zinc-800/60 rounded-2xl hover:border-zinc-700 transition-colors duration-200">
+        <div class="w-9 h-9 flex items-center justify-center bg-indigo-500/10 rounded-xl mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4.5 h-4.5 text-indigo-400" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 17a.75.75 0 0 1-.75-.75V5.612L5.29 9.77a.75.75 0 0 1-1.08-1.04l5.25-5.5a.75.75 0 0 1 1.08 0l5.25 5.5a.75.75 0 1 1-1.08 1.04L10.75 5.612V16.25A.75.75 0 0 1 10 17Z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <h3 class="font-semibold text-white mb-2 tracking-tight">Always current</h3>
+        <p class="text-zinc-400 text-sm leading-relaxed">ClickOnce deployment checks for updates on launch and applies them silently in the background.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Install CTA -->
+  <section class="py-4 pb-32 px-6">
+    <div class="max-w-xl mx-auto text-center p-10 bg-zinc-900 border border-zinc-800/60 rounded-3xl">
+      <h2 class="text-2xl font-bold text-white mb-3 tracking-tight">Ready to install?</h2>
+      <p class="text-zinc-400 mb-1 text-sm">
+        Requires <a href="https://dotnet.microsoft.com/en-us/download/dotnet/10.0"
+                    class="text-indigo-400 hover:text-indigo-300 cursor-pointer transition-colors duration-200 focus:outline-none focus:underline"
+                    target="_blank" rel="noopener">.NET 10 Desktop Runtime</a> on Windows.
+      </p>
+      <p class="text-zinc-600 mb-8 text-xs">Click the button below and allow the ClickOnce installer to run.</p>
+      <a href="TrayCommander.application"
+         class="cursor-pointer inline-flex items-center gap-2 px-7 py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-medium rounded-xl transition-colors duration-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-zinc-900">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4" aria-hidden="true">
+          <path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z"/>
+          <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z"/>
+        </svg>
+        Install TrayCommander
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-zinc-900 py-8 px-6">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-600">
+      <span>TrayCommander</span>
+      <a href="https://github.com/dfsramos/tray-commander"
+         class="hover:text-zinc-400 cursor-pointer transition-colors duration-200 focus:outline-none focus:underline"
+         target="_blank" rel="noopener">github.com/dfsramos/tray-commander</a>
+    </div>
+  </footer>
+
+</body>
+</html>
