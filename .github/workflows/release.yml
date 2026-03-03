@@ -20,6 +20,9 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
       - name: Extract version from tag
         id: version
         shell: bash
@@ -27,9 +30,9 @@ jobs:
 
       - name: Publish ClickOnce
         run: |
-          dotnet publish TrayCommander.csproj -p:PublishProfile=ClickOnce -p:ApplicationVersion=${{ steps.version.outputs.version }} -p:GenerateClickOnceManifests=true -v:diag 2>&1 | Out-File build-diag.log -Encoding utf8
+          msbuild TrayCommander.csproj /t:Publish /p:PublishProfile=ClickOnce /p:ApplicationVersion=${{ steps.version.outputs.version }} /p:GenerateClickOnceManifests=true /p:Configuration=Release /v:diag 2>&1 | Out-File build-diag.log -Encoding utf8
           if ($LASTEXITCODE -ne 0) {
-            Get-Content build-diag.log | Select-String -Pattern 'MSB3094|_Deployment|GenerateClickOnce|SourceFile|DestinationFile|error MSB' | Select-Object -First 80
+            Get-Content build-diag.log | Select-String -Pattern 'MSB3094|MSB4803|UpdateManifest|_Deployment|GenerateClickOnce|error MSB' | Select-Object -First 80
             exit 1
           }
 
