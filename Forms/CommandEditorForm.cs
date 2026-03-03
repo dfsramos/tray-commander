@@ -11,12 +11,19 @@ public class CommandEditorForm : Form
     public CommandEditorForm(List<CommandEntry> commands)
     {
         Commands = commands
-            .Select(c => new CommandEntry { Name = c.Name, Command = c.Command, Runner = c.Runner, RequiresAdmin = c.RequiresAdmin })
+            .Select(c => new CommandEntry
+            {
+                Name = c.Name,
+                Command = c.Command,
+                ScriptPath = c.ScriptPath,
+                Runner = c.Runner,
+                RequiresAdmin = c.RequiresAdmin,
+            })
             .ToList();
 
         Text = "Edit Commands";
-        Size = new Size(700, 450);
-        MinimumSize = new Size(600, 350);
+        Size = new Size(800, 450);
+        MinimumSize = new Size(700, 350);
         StartPosition = FormStartPosition.CenterScreen;
 
         _grid = new DataGridView
@@ -35,7 +42,7 @@ public class CommandEditorForm : Form
         {
             Name = "Name",
             HeaderText = "Name",
-            Width = 160,
+            Width = 140,
         });
 
         _grid.Columns.Add(new DataGridViewTextBoxColumn
@@ -43,23 +50,31 @@ public class CommandEditorForm : Form
             Name = "Command",
             HeaderText = "Command",
             AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+            FillWeight = 50,
+        });
+
+        _grid.Columns.Add(new DataGridViewTextBoxColumn
+        {
+            Name = "ScriptPath",
+            HeaderText = "Script Path",
+            AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+            FillWeight = 50,
         });
 
         var runnerColumn = new DataGridViewComboBoxColumn
         {
             Name = "Runner",
             HeaderText = "Runner",
-            Width = 80,
+            Width = 105,
         };
-        runnerColumn.Items.Add("cmd");
-        runnerColumn.Items.Add("wsl");
+        runnerColumn.Items.AddRange(["cmd", "powershell", "wsl"]);
         _grid.Columns.Add(runnerColumn);
 
         _grid.Columns.Add(new DataGridViewCheckBoxColumn
         {
             Name = "RequiresAdmin",
             HeaderText = "Requires Admin",
-            Width = 110,
+            Width = 95,
         });
 
         PopulateGrid();
@@ -69,6 +84,9 @@ public class CommandEditorForm : Form
 
         var deleteButton = new Button { Text = "Delete", Width = 80 };
         deleteButton.Click += OnDelete;
+
+        var browseButton = new Button { Text = "Browse Script...", Width = 110 };
+        browseButton.Click += OnBrowseScript;
 
         var okButton = new Button { Text = "OK", Width = 80, DialogResult = DialogResult.OK };
         okButton.Click += OnOk;
@@ -84,7 +102,7 @@ public class CommandEditorForm : Form
             AutoSize = true,
             Padding = new Padding(0),
         };
-        leftButtons.Controls.AddRange(new Control[] { addButton, deleteButton });
+        leftButtons.Controls.AddRange(new Control[] { addButton, deleteButton, browseButton });
 
         var rightButtons = new FlowLayoutPanel
         {
@@ -115,18 +133,37 @@ public class CommandEditorForm : Form
     {
         _grid.Rows.Clear();
         foreach (var cmd in Commands)
-            _grid.Rows.Add(cmd.Name, cmd.Command, cmd.Runner, cmd.RequiresAdmin);
+            _grid.Rows.Add(cmd.Name, cmd.Command, cmd.ScriptPath, cmd.Runner, cmd.RequiresAdmin);
     }
 
     private void OnAdd(object? sender, EventArgs e)
     {
-        _grid.Rows.Add("New Command", "", "cmd", false);
+        _grid.Rows.Add("New Command", "", "", "cmd", false);
     }
 
     private void OnDelete(object? sender, EventArgs e)
     {
         if (_grid.SelectedRows.Count > 0)
             _grid.Rows.Remove(_grid.SelectedRows[0]);
+    }
+
+    private void OnBrowseScript(object? sender, EventArgs e)
+    {
+        if (_grid.SelectedRows.Count == 0) return;
+
+        var row = _grid.SelectedRows[0];
+        var runner = row.Cells["Runner"].Value?.ToString() ?? "cmd";
+
+        var filter = runner.ToLowerInvariant() switch
+        {
+            "powershell" => "PowerShell Scripts (*.ps1)|*.ps1|All Files (*.*)|*.*",
+            "wsl"        => "Shell Scripts (*.sh)|*.sh|All Files (*.*)|*.*",
+            _            => "Batch Files (*.bat;*.cmd)|*.bat;*.cmd|All Files (*.*)|*.*",
+        };
+
+        using var dialog = new OpenFileDialog { Filter = filter };
+        if (dialog.ShowDialog() == DialogResult.OK)
+            row.Cells["ScriptPath"].Value = dialog.FileName;
     }
 
     private void OnOk(object? sender, EventArgs e)
@@ -137,15 +174,16 @@ public class CommandEditorForm : Form
 
         foreach (DataGridViewRow row in _grid.Rows)
         {
-            var name    = row.Cells["Name"].Value?.ToString() ?? string.Empty;
-            var command = row.Cells["Command"].Value?.ToString() ?? string.Empty;
-            var runner  = row.Cells["Runner"].Value?.ToString() ?? "cmd";
-            var admin   = row.Cells["RequiresAdmin"].Value is true;
+            var name       = row.Cells["Name"].Value?.ToString() ?? string.Empty;
+            var command    = row.Cells["Command"].Value?.ToString() ?? string.Empty;
+            var scriptPath = row.Cells["ScriptPath"].Value?.ToString() ?? string.Empty;
+            var runner     = row.Cells["Runner"].Value?.ToString() ?? "cmd";
+            var admin      = row.Cells["RequiresAdmin"].Value is true;
 
-            if (string.IsNullOrWhiteSpace(name) && string.IsNullOrWhiteSpace(command))
+            if (string.IsNullOrWhiteSpace(name) && string.IsNullOrWhiteSpace(command) && string.IsNullOrWhiteSpace(scriptPath))
                 continue;
 
-            Commands.Add(new CommandEntry { Name = name, Command = command, Runner = runner, RequiresAdmin = admin });
+            Commands.Add(new CommandEntry { Name = name, Command = command, ScriptPath = scriptPath, Runner = runner, RequiresAdmin = admin });
         }
     }
 }
