@@ -20,7 +20,7 @@ public class TrayApp : ApplicationContext
 
         _trayIcon = new NotifyIcon
         {
-            Icon = SystemIcons.Application,
+            Icon = IconBuilder.Build(),
             Text = "TrayCommander",
             Visible = true,
         };
