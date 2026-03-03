@@ -26,7 +26,19 @@ jobs:
         run: echo "version=${GITHUB_REF_NAME#v}.0" >> $GITHUB_OUTPUT
 
       - name: Publish ClickOnce
-        run: dotnet publish TrayCommander.csproj -p:PublishProfile=ClickOnce -p:ApplicationVersion=${{ steps.version.outputs.version }}
+        run: |
+          dotnet publish TrayCommander.csproj -p:PublishProfile=ClickOnce -p:ApplicationVersion=${{ steps.version.outputs.version }} -v:diag 2>&1 | Out-File build-diag.log -Encoding utf8
+          if ($LASTEXITCODE -ne 0) {
+            Get-Content build-diag.log | Select-String -Pattern 'MSB3094|_Deployment|GenerateClickOnce|SourceFile|DestinationFile|error MSB' | Select-Object -First 80
+            exit 1
+          }
+
+      - name: Upload diagnostic log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-diagnostic
+          path: build-diag.log
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
