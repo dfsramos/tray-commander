@@ -2,6 +2,7 @@ using System.Diagnostics;
 using TrayCommander.Forms;
 using TrayCommander.Models;
 using TrayCommander.Services;
+using TrayCommander.UI;
 
 namespace TrayCommander;
 
@@ -37,56 +38,38 @@ public class TrayApp : ApplicationContext
 
     private ContextMenuStrip BuildContextMenu()
     {
-        var menu = new ContextMenuStrip();
-
-        var cmdCommands = _commands.Where(c => c.Runner.Equals("cmd", StringComparison.OrdinalIgnoreCase)).ToList();
-        var wslCommands = _commands.Where(c => c.Runner.Equals("wsl", StringComparison.OrdinalIgnoreCase)).ToList();
-
-        if (cmdCommands.Count > 0)
+        var menu = new ContextMenuStrip
         {
-            menu.Items.Add(new ToolStripMenuItem("\u2500\u2500 CMD \u2500\u2500") { Enabled = false });
+            Renderer = new DarkMenuRenderer(),
+            ShowImageMargin = false,
+            ShowCheckMargin = false,
+        };
 
-            foreach (var cmd in cmdCommands)
-            {
-                var label = cmd.RequiresAdmin ? $"[CMD] \U0001F6E1 {cmd.Name}" : $"[CMD] {cmd.Name}";
-                var item = new ToolStripMenuItem(label);
-                var captured = cmd;
-                item.Click += (_, _) => CommandRunner.Run(captured, _isElevated);
-                menu.Items.Add(item);
-            }
-        }
-
-        if (wslCommands.Count > 0)
+        foreach (var cmd in _commands)
         {
-            menu.Items.Add(new ToolStripMenuItem("\u2500\u2500 WSL \u2500\u2500") { Enabled = false });
-
-            foreach (var cmd in wslCommands)
-            {
-                var label = cmd.RequiresAdmin ? $"[WSL] \U0001F6E1 {cmd.Name}" : $"[WSL] {cmd.Name}";
-                var item = new ToolStripMenuItem(label);
-                var captured = cmd;
-                item.Click += (_, _) => CommandRunner.Run(captured, _isElevated);
-                menu.Items.Add(item);
-            }
+            var item = new CommandMenuItem(cmd);
+            var captured = cmd;
+            item.Click += (_, _) => CommandRunner.Run(captured, _isElevated);
+            menu.Items.Add(item);
         }
 
         menu.Items.Add(new ToolStripSeparator());
 
-        var editItem = new ToolStripMenuItem("Edit Commands");
+        var editItem = new ToolStripMenuItem("Edit Commands") { Padding = new Padding(12, 0, 0, 0) };
         editItem.Click += OnEditCommands;
         menu.Items.Add(editItem);
 
-        var optionsItem = new ToolStripMenuItem("Options");
+        var optionsItem = new ToolStripMenuItem("Options") { Padding = new Padding(12, 0, 0, 0) };
         optionsItem.Click += OnOptions;
         menu.Items.Add(optionsItem);
 
-        var aboutItem = new ToolStripMenuItem("About");
+        var aboutItem = new ToolStripMenuItem("About") { Padding = new Padding(12, 0, 0, 0) };
         aboutItem.Click += OnAbout;
         menu.Items.Add(aboutItem);
 
         menu.Items.Add(new ToolStripSeparator());
 
-        var quitItem = new ToolStripMenuItem("Quit");
+        var quitItem = new ToolStripMenuItem("Quit") { Padding = new Padding(12, 0, 0, 0) };
         quitItem.Click += OnQuit;
         menu.Items.Add(quitItem);
 
