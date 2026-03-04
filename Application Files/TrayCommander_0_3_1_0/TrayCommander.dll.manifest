@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="TrayCommander.exe" version="0.3.0.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="TrayCommander.exe" version="0.3.1.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
   <application />
   <entryPoint>
     <assemblyIdentity name="Launcher" version="8.0.0.0" language="neutral" processorArchitecture="msil" />
@@ -62,13 +62,13 @@
       <dsig:DigestValue>1M5kJmLIO/VDzXX4lxeDHvdh1yQsRmlGm9+ANbbERBM=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="TrayCommander.dll" size="21504">
+  <file name="TrayCommander.dll" size="22528">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>BFZgRGDcB/y6JIXzXiSiUWCY+mi5WBppmxwslTVIC2U=</dsig:DigestValue>
+      <dsig:DigestValue>XNBHvEZYhkrTia3vlGR2gBWfAFJU2hU89suc8l5u1uQ=</dsig:DigestValue>
     </hash>
   </file>
   <file name="TrayCommander.exe" size="161792">
@@ -77,7 +77,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>v3GFY6nu06VE/2T4WDyUoc7RteIjmwiRPyIHktuqG3U=</dsig:DigestValue>
+      <dsig:DigestValue>JQq4FVLtdPIGK998OhF4i7w9q3t/4YWR52lRxCDiae8=</dsig:DigestValue>
     </hash>
   </file>
   <file name="TrayCommander.runtimeconfig.json" size="519">
