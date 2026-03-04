@@ -1,3 +1,4 @@
+using System.Reflection;
 using TrayCommander.Models;
 
 namespace TrayCommander.Forms;
@@ -10,6 +11,8 @@ public class CommandEditorForm : Form
 
     public CommandEditorForm(List<CommandEntry> commands)
     {
+        DoubleBuffered = true;
+
         Commands = commands
             .Select(c => new CommandEntry
             {
@@ -37,6 +40,11 @@ public class CommandEditorForm : Form
             RowHeadersVisible = false,
             EditMode = DataGridViewEditMode.EditOnEnter,
         };
+
+        typeof(DataGridView).InvokeMember(
+            "DoubleBuffered",
+            BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty,
+            null, _grid, [true]);
 
         _grid.Columns.Add(new DataGridViewTextBoxColumn
         {
